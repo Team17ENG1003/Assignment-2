@@ -1,0 +1,18 @@
+body {
+    background-color: #FFFFFF;
+}
+
+.logoImage {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 70px;
+    
+}
+
+.indexButtons {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+}
