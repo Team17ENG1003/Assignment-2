@@ -24,9 +24,9 @@
 
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
       <header class="mdl-layout__header">
-        <div class="mdl-layout__header-row">
+        <div class="mdl-layout__header-row" style="height:100px;">
           <!-- Title -->
-          <span class="mdl-layout-title">Record a Journey</span>
+          <span class="mdl-layout-title" style="font-size:50px;">Record a Journey</span>
 
           </nav>
         </div>
@@ -44,34 +44,36 @@
 
             <div class="mdl-card mdl-shadow--4dp">
             
-              <div class="mdl-card__supporting-text">
+              <div class="mdl-card__supporting-text" style="font-size:30px;">
                 <form action="#">  <!INPUT FOR RUN NAME>
-                  <div class="mdl-textfield mdl-js-textfield">
-                    <input class="mdl-textfield__input" type="text" id="newRunName" />
-                    <label class="mdl-textfield__label" for="sample1">Journey Name...</label>
+                  <div class="mdl-textfield mdl-js-textfield" style="width:600;">
+                    <input class="mdl-textfield__input" type="text" id="newRunName" style="font-size:30px"/>
+                    <label class="mdl-textfield__label" for="sample1" style="font-size:25px">Journey Name...</label>
                   </div>
-                    <p id="currentDate">31/12/1994</p>  <! P TAG TO PUT CURRNT DATE IN>
+                    <p id="currentDate" style="font-size:30px;">31/12/1994</p>  <! P TAG TO PUT CURRNT DATE IN>
                 </form>
                   
                 Journey Type:
-                <select>  <!JOURNEY TYPE OPTIONS>
+                <select style="font-size:30px;">  <!JOURNEY TYPE OPTIONS>
                     <option value="run">Run</option>
                     <option value="walk">Walk</option>
                     <option value="ride">Ride</option>
                     <option value="other">Other</option>
                 
                 </select>
-                <div class="recordButton">
-                    <img class="playPause" src="images/play_icon.png" style="width:100px;height:100px"> <!RECORD BUTTON>
+                <div style="padding:50px;">
+                    <button id="recordButton">
+                    <img class="playPause" src="images/play_icon.png" style="width:200px;height:200px"> <!RECORD BUTTON>
+                    </button>
                 </div>
                   
-                <div class="mdl-grid"> <!GRID SHOWING LIVE RUN DATA>
-                  <div id="liveDistance" class="mdl-cell mdl-cell--1-col"></div>
-                  <div id="liveSpeed" class="mdl-cell mdl-cell--1-col"></div>
-                  <div id="liveTime" class="mdl-cell mdl-cell--1-col"></div>
+                <div class="mdl-grid" style="margin-bottom:20px;"> <!GRID SHOWING LIVE RUN DATA>
+                  <div id="liveDistance" style="margin-left:50;margin-right:auto;">20km</div>
+                  <div id="liveSpeed" style="margin-left:auto;margin-right:auto;">20km/h</div>
+                  <div id="liveTime" style="margin-left:auto;margin-right:50;">2:35</div>
                 </div>
                   
-                  <div id="liveGoogleMap" style="width:300;height:200;"></div>
+                  <div id="liveGoogleMap" style="display:block;width:700;height:580;margin-left:auto;margin-right:auto;"></div> <!LIVE MAP DIV>
               </div>
             </div>
           
