@@ -1,0 +1,82 @@
+<head>
+    <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
+    <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" type="text/css" href="mystyle.css">
+    
+    <!TEST GOOGLE MAP>
+    <script src="http://maps.googleapis.com/maps/api/js"></script>
+    <script>
+    function initialize() {
+      var mapProp = {
+        center:new google.maps.LatLng(51.508742,-0.120850),
+        zoom:5,
+        mapTypeId:google.maps.MapTypeId.ROADMAP
+      };
+      var map=new google.maps.Map(document.getElementById("liveGoogleMap"),mapProp);
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+    
+</head>
+
+<body>
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+          <!-- Title -->
+          <span class="mdl-layout-title">Record a Journey</span>
+
+          </nav>
+        </div>
+      </header>
+      <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">Record a Journey</span>
+        <nav class="mdl-navigation">
+            <a class="mdl-navigation__link" href="">Home</a>        <! LINK TO INDEX PAGE >
+            <a class="mdl-navigation__link" href="">View Journeys</a>       <! LINK TO VIEW JOURNEYS PAGE >
+        </nav>
+      </div>
+      <main class="mdl-layout__content">
+        <div class="page-content">
+            <!-- Your content goes here -->
+
+            <div class="mdl-card mdl-shadow--4dp">
+            
+              <div class="mdl-card__supporting-text">
+                <form action="#">  <!INPUT FOR RUN NAME>
+                  <div class="mdl-textfield mdl-js-textfield">
+                    <input class="mdl-textfield__input" type="text" id="newRunName" />
+                    <label class="mdl-textfield__label" for="sample1">Journey Name...</label>
+                  </div>
+                    <p id="currentDate">31/12/1994</p>  <! P TAG TO PUT CURRNT DATE IN>
+                </form>
+                  
+                Journey Type:
+                <select>  <!JOURNEY TYPE OPTIONS>
+                    <option value="run">Run</option>
+                    <option value="walk">Walk</option>
+                    <option value="ride">Ride</option>
+                    <option value="other">Other</option>
+                
+                </select>
+                <div class="recordButton">
+                    <img class="playPause" src="images/play_icon.png" style="width:100px;height:100px"> <!RECORD BUTTON>
+                </div>
+                  
+                <div class="mdl-grid"> <!GRID SHOWING LIVE RUN DATA>
+                  <div id="liveDistance" class="mdl-cell mdl-cell--1-col"></div>
+                  <div id="liveSpeed" class="mdl-cell mdl-cell--1-col"></div>
+                  <div id="liveTime" class="mdl-cell mdl-cell--1-col"></div>
+                </div>
+                  
+                  <div id="liveGoogleMap" style="width:300;height:200;"></div>
+              </div>
+            </div>
+          
+          </div>
+      </main>
+    </div>
+
+</body>
