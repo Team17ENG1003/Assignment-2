@@ -63,8 +63,14 @@
                 </select>
                 <div class="recordButton">
                     <img class="playPause" src="images/play_icon.png" style="width:100px;height:100px"> <!RECORD BUTTON>
+                     <div>
+                        <button onClick="start()">Start</button>				
+                    </div>
+                    <div>
+                        <button onClick="stop()">Finish</button>
+                    </div>	
                 </div>
-                  
+                   <div id="outputArea"></div>
                 <div class="mdl-grid"> <!GRID SHOWING LIVE RUN DATA>
                   <div id="liveDistance" class="mdl-cell mdl-cell--1-col"></div>
                   <div id="liveSpeed" class="mdl-cell mdl-cell--1-col"></div>
@@ -75,6 +81,127 @@
               </div>
             </div>
           
+    <script>
+    
+    var outputArea = document.getElementById("outputArea");
+    var outString = "";
+    outputArea.innerHTML = outString; //clear the output area
+    
+    //hr + ":" min + ":" + sec + ":" + ms
+ 
+
+  
+function start(){
+    var ms = 0;
+    var sec = 0;
+    var min = 0;
+    var hr = 0; 
+    
+    var i = 0;
+    
+  
+    this.begin = Date.now() + ms;
+
+        
+    function counting(){
+    var current = Date.now();
+    ms = current - begin;
+    
+	    if (ms >= 1000){
+        sec = sec + 1;
+        ms = 0;
+		begin = Date.now();
+			console.log(sec);
+    }
+    
+    if (sec === 60){
+        min = min + 1;
+        sec = 0;
+    }
+    
+    if (min === 60){
+        hr = hr + 1;
+        min = 0;
+    }
+    
+    if (hr === 100){
+        clearInterval(timing);
+    }
+
+    outputArea.innerHTML = hr + ":" + min + ":" + sec + ":" + ms;
+        
+}
+
+this.timing = setInterval(counting, 10);
+    
+}
+
+    
+    
+
+function stop(){
+    clearInterval(timing);
+    begin = begin;
+}
+    
+function clear(){
+    var saveObj = {
+	   name: "Empty Set",
+	   saveSet: [],
+        hr: 0,
+        min: 0,
+        sec: 0,
+        ms: 0
+	}
+	
+    testSetObjPDO = {
+	   name: "Empty Set",
+        saveSet: [],
+        hr: 0,
+        min: 0,
+        sec: 0,
+        ms: 0
+    }				
+			
+}
+
+            function save(){
+                var runName = prompt("Name of Run:","")
+                this.saveKey;
+                this.saveKeyPDO;
+                this.saveObj = {
+                    name: runName,
+                    hr: hr,
+                    min: min,
+                    sec: sec,
+                    ms: ms,
+                    saveSet: []
+                }
+                this.saveObjPDO = {
+                    name: runName,
+                    hr: hr,
+                    min: min,
+                    sec: sec,
+                    ms: ms,
+                    saveSet: []
+                }
+                if(typeof(storage) !== undefined){
+                saveKey = savedSetObj.name.replace(/ /g, "-"); 				//replace space (/ /) with hyphen globally (g) i.e. all occurrences of space are replaced with a hyphen
+                                saveKeyPDO = saveObjPDO.name.replace(/ /g, "-"); 
+
+                                localStorage.setItem(saveKey, JSON.stringify(saveObj));
+                                localStorage.setItem(saveKeyPDO, JSON.stringify(saveObjPDO));					
+                            }
+                else{
+                        console.log("localStorage is not supported by current browser.");
+                            }			
+            }
+
+</script>
+</body>
+
+</html>
+
           </div>
       </main>
     </div>
