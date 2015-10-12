@@ -1,24 +1,12 @@
 <head>
     <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
     <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
+    <script src="recordJourney.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" type="text/css" href="mystyle.css">
-    
-    <!TEST GOOGLE MAP>
     <script src="http://maps.googleapis.com/maps/api/js"></script>
-    <script>
-    function initialize() {
-      var mapProp = {
-        center:new google.maps.LatLng(51.508742,-0.120850),
-        zoom:5,
-        mapTypeId:google.maps.MapTypeId.ROADMAP
-      };
-      var map=new google.maps.Map(document.getElementById("liveGoogleMap"),mapProp);
-    }
-    google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
-    
 </head>
+
 
 <body>
 
@@ -76,12 +64,29 @@
                   <div id="liveSpeed" class="mdl-cell mdl-cell--1-col"></div>
                   <div id="liveTime" class="mdl-cell mdl-cell--1-col"></div>
                 </div>
+                  <div id="errorDemo"></div>
                   
                   <div id="liveGoogleMap" style="width:300;height:200;"></div>
               </div>
             </div>
           
     <script>
+        
+recordJourney();
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     
     var outputArea = document.getElementById("outputArea");
     var outString = "";
