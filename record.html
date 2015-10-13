@@ -1,7 +1,6 @@
 <head>
     <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
     <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
-    <script src="recordJourney.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" type="text/css" href="mystyle.css">
     <script src="https://maps.googleapis.com/maps/api/js"></script>
@@ -21,8 +20,8 @@
       <div class="mdl-layout__drawer">
         <span class="mdl-layout-title">Record a Journey</span>
         <nav class="mdl-navigation">
-            <a class="mdl-navigation__link" href="">Home</a>        <! LINK TO INDEX PAGE >
-            <a class="mdl-navigation__link" href="">View Journeys</a>       <! LINK TO VIEW JOURNEYS PAGE >
+            <a class="mdl-navigation__link" href="index.html">Home</a>        <! LINK TO INDEX PAGE >
+            <a class="mdl-navigation__link" href="view.html">View Journeys</a>       <! LINK TO VIEW JOURNEYS PAGE >
         </nav>
       </div>
       <main class="mdl-layout__content">
@@ -49,8 +48,8 @@
                 
                 </select>
                 <div style="padding:50px;">
-                    <button id="recordButton" onclick="recordJourney()">
-                    <img class="playPause" src="images/play_icon.png" style="width:200px;height:200px"> <!RECORD BUTTON>
+                    <button id="recordButton" onclick="recordStart()">
+                    <img id="recordImg" class="playPause" src="images/play_icon.png" style="width:200px;height:200px"> <!RECORD BUTTON>
                     </button>
                 </div>
                   
@@ -67,8 +66,9 @@
           </div>
       </main>
     </div>
+    <script src="recordJourney.js"></script>
     <script>
-        
+initialStorageData()
 //recordJourney();
         
 // Johno's Part: NEED TO FIX A FEW THINGS      

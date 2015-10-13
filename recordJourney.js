@@ -13,6 +13,8 @@
 
 var posArray=[];
 var id;
+var journeyCount;
+var key;
 
 function recordJourney(){
     // .watchPosition(success,error,options); 
@@ -59,23 +61,27 @@ function recordJourney(){
         map.fitBounds(latLngBounds);
     },
         function(positionError){
-          $("#error").append("Error: " + positionError.message + "<br />");
+         console.log("LOCATION ERROR");         document.getElementById("recordImg").src="images/stop_icon.png"
+         alert("GPS error. Refresh to try again.");
         },
         {
-          enableHighAccuracy: false,
+          enableHighAccuracy: true,
           timeout: 10 * 1000 // 10 seconds
         });
 };
 
-
-
-
 function stop(){
-    // stop watchPosition 
-    navigator.geolocation.clearWatch(id);
+    
+    // stop counters
+    
+    // Retrieve object variables    
+    var localJCount
+    var date = document.getElementById("currentDate").innerHTML;
+    
     // Create unique journey Object
     var runObject ={
-        path: posArray,
+        path: posArray.toString(),
+        date: date,
         // Add other objects
         // - Run Type
         // - Distance
@@ -85,7 +91,70 @@ function stop(){
         // - Date
     }
     // Store journey Object to localStorage
-    localStorage["runStorage"] = JSON.stringify(runObject);
+    journeyCount = localStorage.numberOfJourneys
+    journeyCount++
+    key = 'runJourney' + journeyCount
+    localStorage[key] = JSON.stringify(runObject);
+    localStorage['numberOfJourneys'] = journeyCount;
+    
     // Delete Array
     posArray=[];
+    // stop watchPosition 
+    //navigator.geolocation.clearWatch(id);
 }
+
+function recordStart(){
+    // Start map recording
+    recordJourney();
+    // Change button onclick attribute
+    document.getElementById("recordButton").onclick= function(){recordStop()};
+    // Change button image
+    document.getElementById("recordImg").src="images/pause_icon.png";
+    // Test
+    console.log("Recording");
+}
+
+function recordStop(){
+    // Stop map recording
+    stop();
+    // Change button onclick attribute
+    document.getElementById("recordButton").onclick= function(){recordStart()};
+    // Change button image
+    document.getElementById("recordImg").src="images/play_icon.png";
+    // Test
+    console.log("Stopping & Saved to storage");
+}
+
+function initialStorageData(){
+    var journeyCount = 0;
+    var key = 'run' + journeyCount;
+    localStorage['numberOfJourneys'] = journeyCount;
+}
+
+
+// Change date of Run
+var date;
+var date2String;
+var currentDate;
+
+currentDate = document.getElementById("currentDate");
+
+    Date.prototype.ddmmyyyy = function() {
+   var yyyy = this.getFullYear().toString();
+   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+   var dd  = this.getDate().toString();
+   return (dd[1]?dd:"0"+dd[0]) + (mm[1]?mm:"0"+mm[0]) + yyyy; // padding
+  };
+
+    d = new Date();
+    date = d.ddmmyyyy();
+
+// Change document date to current date.
+ currentDate.innerHTML =  date[0]+date[1]+"/"+date[2]+date[3]+"/"+date[6]+date[7];
+
+// for the purpose of clearing local storage
+function clearAll(){
+    localStorage.clear();
+    initialStorageData();
+}
+
