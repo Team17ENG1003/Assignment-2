@@ -71,7 +71,8 @@ function recordJourney(){
 };
 
 function stop(){
-    
+    // stop watchPosition
+    navigator.geolocation.clearWatch(id);
     // stop counters
     
     // Retrieve object variables    
@@ -99,8 +100,6 @@ function stop(){
     
     // Delete Array
     posArray=[];
-    // stop watchPosition 
-    //navigator.geolocation.clearWatch(id);
 }
 
 function recordStart(){
