@@ -6,12 +6,17 @@
 // Everything after is a polyline
 // Final plot is a marker
 
-function recordJourney(){
-    // Position Array
-    var posArray = [];
 
+// Save Array to local Storage
+// Retrieve Array from local Storage
+// Delete list if needed
+
+var posArray=[];
+var id;
+
+function recordJourney(){
     // .watchPosition(success,error,options); 
-    navigator.geolocation.watchPosition(function(position){
+     id = navigator.geolocation.watchPosition(function(position){
         // Save the current position into position Array
         posArray.push(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
         
@@ -29,13 +34,19 @@ function recordJourney(){
         var latLngBounds = new google.maps.LatLngBounds();
         for(var i = 0; i < posArray.length; i++){
             latLngBounds.extend(posArray[i]);
-            // Place the marker
-            new google.maps.Marker({
-              map: map,
-              position: posArray[i],
-              title: "Point " + (i + 1)
-            });
         }
+        // Place Marker at first position
+        new google.maps.Marker({
+              map: map,
+              position: posArray[0],
+              title: "Point " + 1
+            });
+        // Place Marker at last position
+        new google.maps.Marker({
+              map: map,
+              position: posArray[posArray.length-1],
+              title: "Point " + (posArray.length + 1)
+            });
         // Creates the polyline object
         var polyline = new google.maps.Polyline({
             map: map,
@@ -59,10 +70,22 @@ function recordJourney(){
 
 
 
-
-
-
-
-
-
-
+function stop(){
+    // stop watchPosition 
+    navigator.geolocation.clearWatch(id);
+    // Create unique journey Object
+    var runObject ={
+        path: posArray,
+        // Add other objects
+        // - Run Type
+        // - Distance
+        // - Average Speed
+        // - Duration
+        // - Title
+        // - Date
+    }
+    // Store journey Object to localStorage
+    localStorage["runStorage"] = JSON.stringify(runObject);
+    // Delete Array
+    posArray=[];
+}
