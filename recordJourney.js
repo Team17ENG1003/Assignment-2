@@ -29,18 +29,15 @@ function recordJourney(){
         newLong = position.coords.longitude;
         
          
-        if (Math.round(newLat*10000) != Math.round(lat*10000)){
+        if ((Math.round(newLat*100000) != Math.round(lat*100000))||(Math.round(newLong*100000) != Math.round(long*100000))){ //10000
             lat = newLat
-            document.getElementById("liveDistance").innerHTML = lat;
+            document.getElementById("liveSpeed").innerHTML = lat;
             console.log(lat);
-             if (Math.round(newLong*10000) != Math.round(long*10000)){
-                 long=newLong
-                 document.getElementById("liveTime").innerHTML = long;
-                 console.log(long);
-             }
-            else{
-                console.log("using old long value");
-             }
+            long=newLong;
+            document.getElementById("liveTime").innerHTML = long;
+            console.log(long);
+            
+            
             // Save the current position into position Array
 
             posArray.push(new google.maps.LatLng(lat, long));
@@ -82,9 +79,11 @@ function recordJourney(){
             });
             // Fix the bounds of the generated points
             map.fitBounds(latLngBounds);
+            
+            getDistance();
         }
         else{
-            console.log("using old lat value");
+            console.log("no change");
         }
     },
         function(positionError){
@@ -156,11 +155,14 @@ function initialStorageData(){
     var key = 'run' + journeyCount;
     localStorage['numberOfJourneys'] = journeyCount;
     
+    getDistance();
+    
     // Save current position    
     navigator.geolocation.getCurrentPosition(function showPosition(position){
         lat = position.coords.latitude;
         long = position.coords.longitude;
         posArray.push(new google.maps.LatLng(lat, long));
+        posArray2.push({lat: lat,lng: long});
         var mapProp = {
             zoom:18,
             center:{lat: lat, lng: long},            
@@ -205,3 +207,45 @@ function clearAll(){
     initialStorageData();
 }
 
+
+// Calculate distance travelled using position array
+// distance formula: http://stackoverflow.com/a/27943
+
+function getDistance(){
+    var distance=0;
+    
+    
+    if (posArray2.length<2){
+        distance=0;
+    }
+    else{
+        for (var i = 0; i < posArray2.length-1; i++){
+            distance = distance + getDistanceFromLatLonInKm(posArray2[i].lat,posArray2[i].lng,posArray2[i+1].lat,posArray2[i+1].lng);
+        }
+    }
+    
+    if (distance<1){
+    document.getElementById("liveDistance").innerHTML = (distance*1000).toFixed(2)+" m";
+    }
+    else{
+    document.getElementById("liveDistance").innerHTML = distance.toFixed(2)+" km"
+    }
+    
+        function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+          var R = 6371; // Radius of the earth in km
+          var dLat = deg2rad(lat2-lat1);  // deg2rad below
+          var dLon = deg2rad(lon2-lon1); 
+          var a = 
+            Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+            Math.sin(dLon/2) * Math.sin(dLon/2)
+            ; 
+          var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+          var d = R * c; // Distance in km
+          return d;
+        }
+
+        function deg2rad(deg) {
+          return deg * (Math.PI/180)
+        }
+}
