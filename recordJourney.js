@@ -19,6 +19,7 @@ var key;
 var lat;
 var long;
 var distance;
+var runName;
 
 function recordJourney(){
     // .watchPosition(success,error,options); 
@@ -30,7 +31,7 @@ function recordJourney(){
         newLong = position.coords.longitude;
         
          
-        if ((Math.round(newLat*100000) != Math.round(lat*100000))||(Math.round(newLong*100000) != Math.round(long*100000))){ //10000
+        if ((Math.round(newLat*10000) != Math.round(lat*10000))||(Math.round(newLong*10000) != Math.round(long*10000))){ //10000
             lat = newLat
             document.getElementById("liveSpeed").innerHTML = lat;
             console.log(lat);
@@ -98,12 +99,9 @@ function recordJourney(){
 };
 
 function stop(){
-    // stop watchPosition
-    navigator.geolocation.clearWatch(id);
     // stop counters
     
-    // Retrieve object variables    
-    var localJCount
+    // Retrieve object variables
     var date = document.getElementById("currentDate").innerHTML;
     
     // Create unique journey Object
@@ -111,14 +109,12 @@ function stop(){
         path: posArray,
         path2: posArray2,
         date: date,
-        distance: distance
+        distance: distance,
+        title: runName
         // Add other objects
         // - Run Type
-        // - Distance
         // - Average Speed
         // - Duration
-        // - Title
-        // - Date
     }
     // Store journey Object to localStorage
     journeyCount = localStorage.numberOfJourneys
@@ -126,31 +122,29 @@ function stop(){
     key = 'runJourney' + journeyCount
     localStorage[key] = JSON.stringify(runObject);
     localStorage['numberOfJourneys'] = journeyCount;
-    
-    // Delete Array
-    posArray=[];
 }
 
 function recordStart(){
     // Start map recording
     recordJourney();
     // Change button onclick attribute
-    document.getElementById("recordButton").onclick= function(){recordStop()};
+    document.getElementById("recordButton").onclick= function(){recordPause()};
     // Change button image
     document.getElementById("recordImg").src="images/pause_icon.png";
     // Test
     console.log("Recording");
 }
 
-function recordStop(){
+function recordPause(){
     // Stop map recording
-    stop();
+    // stop watchPosition
+    navigator.geolocation.clearWatch(id);
     // Change button onclick attribute
     document.getElementById("recordButton").onclick= function(){recordStart()};
     // Change button image
     document.getElementById("recordImg").src="images/play_icon.png";
     // Test
-    console.log("Stopping & Saved to storage");
+    console.log("Paused Run");
 }
 
 function initialStorageData(){
@@ -159,6 +153,7 @@ function initialStorageData(){
     localStorage['numberOfJourneys'] = journeyCount;
     
     getDistance();
+    changeDate();
     
     // Save current position    
     navigator.geolocation.getCurrentPosition(function showPosition(position){
@@ -185,24 +180,28 @@ function initialStorageData(){
 
 
 // Change date of Run
-var date;
-var date2String;
-var currentDate;
+function changeDate(){
+    var date;
+    var date2String;
+    var currentDate;
 
-currentDate = document.getElementById("currentDate");
+    currentDate = document.getElementById("currentDate");
 
-    Date.prototype.ddmmyyyy = function() {
-   var yyyy = this.getFullYear().toString();
-   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-   var dd  = this.getDate().toString();
-   return (dd[1]?dd:"0"+dd[0]) + (mm[1]?mm:"0"+mm[0]) + yyyy; // padding
-  };
+        Date.prototype.ddmmyyyy = function() {
+       var yyyy = this.getFullYear().toString();
+       var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+       var dd  = this.getDate().toString();
+       return (dd[1]?dd:"0"+dd[0]) + (mm[1]?mm:"0"+mm[0]) + yyyy; // padding
+      };
 
-    d = new Date();
-    date = d.ddmmyyyy();
+        d = new Date();
+        date = d.ddmmyyyy();
 
-// Change document date to current date.
- currentDate.innerHTML =  date[0]+date[1]+"/"+date[2]+date[3]+"/"+date[6]+date[7];
+    // Change document date to current date.
+     currentDate.innerHTML =  date[0]+date[1]+"/"+date[2]+date[3]+"/"+date[6]+date[7];
+}
+
+
 
 // for the purpose of clearing local storage
 function clearAll(){
@@ -249,4 +248,18 @@ function getDistance(){
         function deg2rad(deg) {
           return deg * (Math.PI/180)
         }
+}
+
+// onkeypress function for Journey Name
+// Stops the run and saves it to storage
+function handle(e){
+        if(e.keyCode === 13){
+            var k = document.getElementById("newRunName").value;
+            runName = k;
+            recordPause();
+            stop();
+            window.location.href="view.html";
+        }
+
+        return false;
 }
