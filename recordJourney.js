@@ -18,6 +18,7 @@ var journeyCount;
 var key;
 var lat;
 var long;
+var distance;
 
 function recordJourney(){
     // .watchPosition(success,error,options); 
@@ -107,8 +108,10 @@ function stop(){
     
     // Create unique journey Object
     var runObject ={
-        path: posArray.toString(),
+        path: posArray,
+        path2: posArray2,
         date: date,
+        distance: distance
         // Add other objects
         // - Run Type
         // - Distance
@@ -211,9 +214,7 @@ function clearAll(){
 // Calculate distance travelled using position array
 // distance formula: http://stackoverflow.com/a/27943
 
-function getDistance(){
-    var distance=0;
-    
+function getDistance(){  
     
     if (posArray2.length<2){
         distance=0;
