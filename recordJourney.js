@@ -12,53 +12,80 @@
 // Delete list if needed
 
 var posArray=[];
+var posArray2=[];
 var id;
 var journeyCount;
 var key;
+var lat;
+var long;
 
 function recordJourney(){
     // .watchPosition(success,error,options); 
      id = navigator.geolocation.watchPosition(function(position){
-        // Save the current position into position Array
-        posArray.push(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+        var newLat;
+        var newLong;
+         
+        newLat = position.coords.latitude;
+        newLong = position.coords.longitude;
         
-        var mapProp = {
-            zoom:1,
-            center:posArray[0],            
-            mapTypeControl: false,
-            streetViewControl: false,
-            mapTypeId:google.maps.MapTypeId.ROADMAP
-        };
-        var map=new google.maps.Map(document.getElementById("liveGoogleMap"),mapProp);
+         
+        if (Math.round(newLat*10000) != Math.round(lat*10000)){
+            lat = newLat
+            document.getElementById("liveDistance").innerHTML = lat;
+            console.log(lat);
+             if (Math.round(newLong*10000) != Math.round(long*10000)){
+                 long=newLong
+                 document.getElementById("liveTime").innerHTML = long;
+                 console.log(long);
+             }
+            else{
+                console.log("using old long value");
+             }
+            // Save the current position into position Array
 
-        // Create the array that will be used to fit the view to the points range and
-        // place the markers to the polyline's points
-        var latLngBounds = new google.maps.LatLngBounds();
-        for(var i = 0; i < posArray.length; i++){
-            latLngBounds.extend(posArray[i]);
+            posArray.push(new google.maps.LatLng(lat, long));
+            posArray2.push({lat: lat,lng: long});
+
+            var mapProp = {
+                zoom:1,
+                center:posArray[0],            
+                mapTypeControl: false,
+                streetViewControl: false, mapTypeId:google.maps.MapTypeId.ROADMAP
+            };
+            var map=new google.maps.Map(document.getElementById("liveGoogleMap"),mapProp);
+
+            // Create the array that will be used to fit the view to the points range and
+            // place the markers to the polyline's points
+            var latLngBounds = new google.maps.LatLngBounds();
+            for(var i = 0; i < posArray.length; i++){
+                latLngBounds.extend(posArray[i]);
+            }
+            // Place Marker at first position
+            new google.maps.Marker({
+                  map: map,
+                  position: posArray[0],
+                  title: "Point " + 1
+                });
+            // Place Marker at last position
+            new google.maps.Marker({
+                  map: map,
+                  position: posArray[posArray.length-1],
+                  title: "Point " + (posArray.length + 1)
+                });
+            // Creates the polyline object
+            var polyline = new google.maps.Polyline({
+                map: map,
+                path: posArray,
+                strokeColor: '#0000FF',
+                strokeOpacity: 0.7,
+                strokeWeight: 1
+            });
+            // Fix the bounds of the generated points
+            map.fitBounds(latLngBounds);
         }
-        // Place Marker at first position
-        new google.maps.Marker({
-              map: map,
-              position: posArray[0],
-              title: "Point " + 1
-            });
-        // Place Marker at last position
-        new google.maps.Marker({
-              map: map,
-              position: posArray[posArray.length-1],
-              title: "Point " + (posArray.length + 1)
-            });
-        // Creates the polyline object
-        var polyline = new google.maps.Polyline({
-            map: map,
-            path: posArray,
-            strokeColor: '#0000FF',
-            strokeOpacity: 0.7,
-            strokeWeight: 1
-        });
-        // Fix the bounds of the generated points
-        map.fitBounds(latLngBounds);
+        else{
+            console.log("using old lat value");
+        }
     },
         function(positionError){
          console.log("LOCATION ERROR");         document.getElementById("recordImg").src="images/stop_icon.png"
@@ -66,7 +93,7 @@ function recordJourney(){
         },
         {
           enableHighAccuracy: true,
-          timeout: 10 * 1000 // 10 seconds
+          timeout: 15 * 1000 // 10 seconds
         });
 };
 
@@ -128,6 +155,27 @@ function initialStorageData(){
     var journeyCount = 0;
     var key = 'run' + journeyCount;
     localStorage['numberOfJourneys'] = journeyCount;
+    
+    // Save current position    
+    navigator.geolocation.getCurrentPosition(function showPosition(position){
+        lat = position.coords.latitude;
+        long = position.coords.longitude;
+        posArray.push(new google.maps.LatLng(lat, long));
+        var mapProp = {
+            zoom:18,
+            center:{lat: lat, lng: long},            
+            mapTypeControl: false,
+            streetViewControl: false,
+            mapTypeId:google.maps.MapTypeId.ROADMAP
+    };
+        var map=new google.maps.Map(document.getElementById("liveGoogleMap"),mapProp);
+        // add marker of current ocation
+        new google.maps.Marker({
+            map: map,
+            position: posArray[0],
+            title: 'Start'
+        });
+    });    
 }
 
 
