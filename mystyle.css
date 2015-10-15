@@ -24,6 +24,17 @@ body {
     padding: 10px;
 }
 
-.mdl-card{
-    width: 720px;
+.card-menu-button {
+    float: right;    
+}
+
+.card-run-name {
+    float: left;
+    font-size: 40px;
+}
+
+.card-run-date {
+    margin-top: 10px;
+    font-size: 20px;
+    
 }
