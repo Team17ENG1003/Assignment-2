@@ -20,6 +20,12 @@ var lat;
 var long;
 var distance;
 var runName;
+// Timer Variables
+var ms = 0;
+var sec = 0;
+var min = 0;
+var hr = 0;
+var pause = 0; //Retains the number of milliseconds when resuming run.
 
 function recordJourney(){
     // .watchPosition(success,error,options); 
@@ -33,10 +39,8 @@ function recordJourney(){
          
         if ((Math.round(newLat*10000) != Math.round(lat*10000))||(Math.round(newLong*10000) != Math.round(long*10000))){ //10000
             lat = newLat
-            document.getElementById("liveSpeed").innerHTML = lat;
             console.log(lat);
             long=newLong;
-            document.getElementById("liveTime").innerHTML = long;
             console.log(long);
             
             
@@ -89,7 +93,8 @@ function recordJourney(){
         }
     },
         function(positionError){
-         console.log("LOCATION ERROR");         document.getElementById("recordImg").src="images/stop_icon.png"
+         console.log("LOCATION ERROR");
+         document.getElementById("recordImg").src="images/stop_icon.png"
          alert("GPS error. Refresh to try again.");
         },
         {
@@ -98,7 +103,7 @@ function recordJourney(){
         });
 };
 
-function stop(){
+function saveRun(){
     // stop counters
     
     // Retrieve object variables
@@ -127,24 +132,32 @@ function stop(){
 function recordStart(){
     // Start map recording
     recordJourney();
+    // Start Timer
+    timerStart();
     // Change button onclick attribute
-    document.getElementById("recordButton").onclick= function(){recordPause()};
+    document.getElementById("recordButton").onclick= function(){recordStop()};
     // Change button image
     document.getElementById("recordImg").src="images/pause_icon.png";
     // Test
     console.log("Recording");
 }
 
-function recordPause(){
+function recordStop(){
     // Stop map recording
     // stop watchPosition
     navigator.geolocation.clearWatch(id);
+    // Stop timer
+    timerStop();
+    
+    saveRun();
     // Change button onclick attribute
     document.getElementById("recordButton").onclick= function(){recordStart()};
     // Change button image
     document.getElementById("recordImg").src="images/play_icon.png";
     // Test
-    console.log("Paused Run");
+    console.log("Stopped Run");
+    // change page
+    window.location.href="view.html";
 }
 
 function initialStorageData(){
@@ -163,6 +176,7 @@ function initialStorageData(){
     
     getDistance();
     changeDate();
+    changeSpeed();
     
     // Save current position    
     navigator.geolocation.getCurrentPosition(function showPosition(position){
@@ -210,6 +224,19 @@ function changeDate(){
      currentDate.innerHTML =  date[0]+date[1]+"/"+date[2]+date[3]+"/"+date[6]+date[7];
 }
 
+// Change speed of Run
+function changeSpeed(){
+    var time;
+    var speed;
+    var output = document.getElementById("liveSpeed");
+    // Time in Hours
+    time = hr+min/60+sec/3600+ms/3600000;    
+    // Speed calculation
+    speed = distance/time;
+    // Display output
+    console.log(speed);
+    output.innerHTML = speed.toFixed(1) + " km/h";    
+}
 
 
 // for the purpose of clearing local storage
@@ -265,9 +292,9 @@ function handle(e){
         if(e.keyCode === 13){
             var k = document.getElementById("newRunName").value;
             runName = k;
-            recordPause();
-            stop();
-            window.location.href="view.html";
+//            recordPause();
+//            stop();
+//            window.location.href="view.html";
         }
 
         return false;
@@ -275,6 +302,48 @@ function handle(e){
 
 
 
+function timerStart(){
+    var begin = Date.now();
+    var outputArea = document.getElementById("liveTime");
+        function counting(){
+            var current = Date.now();
+            ms = current - begin + pause;
+
+                if (ms >= 1000){
+                sec++;
+                ms = 0;
+                pause = 0;
+                begin = Date.now();
+            }
+
+            if (sec === 60){
+                min++;
+                sec = 0;
+            }
+
+            if (min === 60){
+                hr++;
+                min = 0;
+            }
+
+            if (ms < 100){
+                outputArea.innerHTML = hr + ":" + min + ":" + sec + ":0" + ms;
+            }
+            else {
+                outputArea.innerHTML = hr + ":" + min + ":" + sec + ":" + ms;
+            }
+            
+            // Update Speed given new time value
+            changeSpeed();
+        }
+    this.timing = setInterval(counting, 10);
+}
+
+function timerStop(){
+    clearInterval(timing);
+    pause = ms;
+    return pause
+}
 
 
 
