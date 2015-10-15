@@ -148,7 +148,16 @@ function recordPause(){
 }
 
 function initialStorageData(){
-    var journeyCount = 0;
+    // Check if JourneyCount exits in localStorage
+    if (localStorage.getItem("numberOfJourneys") === null){
+        journeyCount=0;        
+        alert('journeyCount doesn\'t exist');
+    };
+    if(localStorage.getItem("numberOfJourneys") !== null){
+        journeyCount = localStorage['numberOfJourneys'];
+        alert('journeyCount does exist');
+    };
+    
     var key = 'run' + journeyCount;
     localStorage['numberOfJourneys'] = journeyCount;
     
@@ -263,3 +272,65 @@ function handle(e){
 
         return false;
 }
+
+
+
+
+
+
+
+//// TIMER
+//
+//function timer(){
+//        var ms = 0;
+//        var sec = 0;
+//        var min = 0;
+//        var hr = 0;  
+//
+//
+//    this.inner = function(){
+//
+//        this.begin = Date.now();
+//
+//
+//        function counting(){
+//        var current = Date.now();
+//        ms = current - begin;
+//
+//            if (ms >= 1000){
+//            sec = sec + 1;
+//            ms = 0;
+//            begin = Date.now();
+//                console.log(sec);
+//        }
+//
+//        if (sec === 60){
+//            min = min + 1;
+//            sec = 0;
+//        }
+//
+//        if (min === 60){
+//            hr = hr + 1;
+//            min = 0;
+//        }
+//
+//        if (hr === 100){
+//            clearInterval(timing);
+//        }
+//
+//        outputArea.innerHTML = hr + ":" + min + ":" + sec + ":" + ms;
+//
+//    }
+//
+//    this.timing = setInterval(counting, 10);
+//
+//    }
+//
+//
+//
+//
+//    this.stop() = function(){
+//        clearInterval(timing);
+//        begin = begin;
+//    }
+//}
