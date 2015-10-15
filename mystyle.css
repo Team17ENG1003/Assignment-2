@@ -2,11 +2,12 @@ body {
     background-color: #FFFFFF;
 }
 
+
 .logoImage {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    padding: 70px;
+    padding: 100px;
     
 }
 
@@ -17,13 +18,19 @@ body {
     padding: 10px;
 }
 
-.playPause {
+#recordButton {
     display: block;
     margin-left: auto;
     margin-right: auto;
     padding: 10px;
+    background:rgba(255,255,255,0);
+    border-radius: 50%;
+    
 }
 
 .mdl-card{
-    width: 720px;
+    width: auto;
+    height: 90%;
+    margin:20px;
+    
 }

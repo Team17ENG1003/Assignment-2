@@ -1,20 +1,18 @@
 <head>
     <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
     <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
-    <script src="recordJourney.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" type="text/css" href="mystyle.css">
-    <script src="http://maps.googleapis.com/maps/api/js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
 </head>
-
 
 <body>
 
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
       <header class="mdl-layout__header">
-        <div class="mdl-layout__header-row">
+        <div class="mdl-layout__header-row" style="height:100px;">
           <!-- Title -->
-          <span class="mdl-layout-title">Record a Journey</span>
+          <span class="mdl-layout-title" style="font-size:50px;">Record a Journey</span>
 
           </nav>
         </div>
@@ -22,8 +20,8 @@
       <div class="mdl-layout__drawer">
         <span class="mdl-layout-title">Record a Journey</span>
         <nav class="mdl-navigation">
-            <a class="mdl-navigation__link" href="">Home</a>        <! LINK TO INDEX PAGE >
-            <a class="mdl-navigation__link" href="">View Journeys</a>       <! LINK TO VIEW JOURNEYS PAGE >
+            <a class="mdl-navigation__link" href="index.html">Home</a>        <! LINK TO INDEX PAGE >
+            <a class="mdl-navigation__link" href="view.html">View Journeys</a>       <! LINK TO VIEW JOURNEYS PAGE >
         </nav>
       </div>
       <main class="mdl-layout__content">
@@ -32,46 +30,45 @@
 
             <div class="mdl-card mdl-shadow--4dp">
             
-              <div class="mdl-card__supporting-text">
-                <form action="#">  <!INPUT FOR RUN NAME>
-                  <div class="mdl-textfield mdl-js-textfield">
-                    <input class="mdl-textfield__input" type="text" id="newRunName" />
-                    <label class="mdl-textfield__label" for="sample1">Journey Name...</label>
+              <div class="mdl-card__supporting-text" style="font-size:30px;">
+<!--                <form action="#">  <!INPUT FOR RUN NAME>-->
+                  <div class="mdl-textfield mdl-js-textfield" style="width:auto;">
+                    <input class="mdl-textfield__input" type="text" id="newRunName" onkeypress="handle(event)" style="font-size:30px"/>
+                    <label class="mdl-textfield__label" for="sample1" style="font-size:25px">Journey Name...</label>
                   </div>
-                    <p id="currentDate">31/12/1994</p>  <! P TAG TO PUT CURRNT DATE IN>
-                </form>
+                    <p id="currentDate" style="font-size:30px;">31/12/1994</p>  <! P TAG TO PUT CURRNT DATE IN>
+<!--                </form>-->
                   
                 Journey Type:
-                <select>  <!JOURNEY TYPE OPTIONS>
+                <select style="font-size:30px;">  <!JOURNEY TYPE OPTIONS>
                     <option value="run">Run</option>
                     <option value="walk">Walk</option>
                     <option value="ride">Ride</option>
                     <option value="other">Other</option>
                 
                 </select>
-                <div class="recordButton">
-                    <img class="playPause" src="images/play_icon.png" style="width:100px;height:100px"> <!RECORD BUTTON>
-                     <div>
-                        <button onClick="recordJourney()">Start</button>				
-                    </div>
-                    <div>
-                        <button onClick="stop()">Finish</button>
-                    </div>	
+                <div style="padding:50px;">
+                    <button id="recordButton" onclick="recordStart()">
+                    <img id="recordImg" class="playPause" src="images/play_icon.png" style="width:200px;height:200px"> <!RECORD BUTTON>
+                    </button>
                 </div>
-                   <div id="outputArea"></div>
-                <div class="mdl-grid"> <!GRID SHOWING LIVE RUN DATA>
-                  <div id="liveDistance" class="mdl-cell mdl-cell--1-col"></div>
-                  <div id="liveSpeed" class="mdl-cell mdl-cell--1-col"></div>
-                  <div id="liveTime" class="mdl-cell mdl-cell--1-col"></div>
-                </div>
-                  <div id="errorDemo"></div>
                   
-                  <div id="liveGoogleMap" style="width:300;height:200;"></div>
+                <div class="mdl-grid" style="margin-bottom:20px;"> <!GRID SHOWING LIVE RUN DATA>
+                  <div id="liveDistance" style="margin-left:50;margin-right:auto;">20km</div>
+                  <div id="liveSpeed" style="margin-left:auto;margin-right:auto;">20km/h</div>
+                  <div id="liveTime" style="margin-left:auto;margin-right:50;">2:35</div>
+                </div>
+                  
+                  <div id="liveGoogleMap" style="position:relative;width:auto;height:55%;"></div> <!LIVE MAP DIV>
               </div>
             </div>
           
+          </div>
+      </main>
+    </div>
+    <script src="recordJourney.js"></script>
     <script>
-        
+initialStorageData()
 //recordJourney();
         
 // Johno's Part: NEED TO FIX A FEW THINGS      
