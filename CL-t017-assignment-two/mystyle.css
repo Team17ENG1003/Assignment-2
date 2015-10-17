@@ -38,3 +38,8 @@ body {
     font-size: 20px;
     
 }
+
+.mdl-grid {
+    max-width: 500px;
+}
+

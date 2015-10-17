@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+	<title>Eng1003 Workshop Code Week 03</title>
+	<style>
+		#outputArea{
+			padding: .25em;
+			border: solid black 2px;
+			margin: 2em;
+			margin-bottom: 1em;
+			
+			height: 20em;
+			width: 40em;
+			
+			overflow-y: scroll;
+			
+			font-family: arial "sans serif";
+			font-size: 1em;
+			color: rgb(50, 50, 250);
+			
+			background-color: rgb(225,225,225) ;
+		}
+		
+		button, input{
+			margin-top: 1em;
+			margin-left: 3em;
+			width: 25em;
+		}
+        
+	</style>
+</head>
+
+    
+<body>
+    <!-- 	-->
+       
+    <div id="outputArea"></div>
+    
+    <div>
+        <button onClick="start()">Start</button>				
+    </div>
+    <div>
+        <button onClick="stop()">Finish</button>
+    </div>		
+    <div>
+        <button onClick="save()">Save</button>				
+    </div>
+    <div>
+        <button onClick="clear()">Clear</button>				
+    </div>
+    
+    
+    <script>
+    
+    var outputArea = document.getElementById("outputArea");
+    var outString = "";
+    outputArea.innerHTML = outString; //clear the output area
+    
+    //hr + ":" min + ":" + sec + ":" + ms
+   
+    var ms = 0;
+    var sec = 0;
+    var min = 0;
+    var hr = 0;
+    var pause = 0; //Retains the number of milliseconds when resuming run.
+        
+    var saveNameInput = document.getElementById("saveName");
+    var savePDONameInput = document.getElementById("savePDOName");
+        
+        
+function start(){
+
+
+    var begin = Date.now();
+    function counting(){
+    var current = Date.now();
+    ms = current - begin + pause;
+    
+	    if (ms >= 1000){
+        sec++;
+        ms = 0;
+        pause = 0;
+		begin = Date.now();
+    }
+    
+    if (sec === 60){
+        min++;
+        sec = 0;
+    }
+    
+    if (min === 60){
+        hr++;
+        min = 0;
+    }
+        
+    if (ms < 100){
+        outputArea.innerHTML = hr + ":" + min + ":" + sec + ":0" + ms;
+    }
+    else {
+        outputArea.innerHTML = hr + ":" + min + ":" + sec + ":" + ms;
+    }
+}
+
+this.timing = setInterval(counting, 10);
+    
+
+}
+
+function stop(){
+    clearInterval(timing);
+    pause = ms;
+    return pause
+}
+    
+function clear(){
+    var runObj = {
+	   name: "",
+	   saveSet: [],
+        hr: 0,
+        min: 0,
+        sec: 0,
+        ms: 0
+	}				
+}
+
+function save(){
+    var allRuns;
+    var saveObj2; //Dunno what I'm using this for yet.
+    var saveFileNum; // Nor do I know what this does
+    var savedRuns = [];
+    var runName;
+    
+    var runObj = {
+        name: prompt("Name of Run:", ""),
+        hr: hr,
+        min: min,
+        sec: sec,
+        ms: ms,
+        saveSet: []
+    }
+    
+    var newSave = savedRuns.push(runObj);
+    
+    if(typeof(storage) !== undefined){
+    allRuns = runObj.name.replace(/ /g, "-"); 				//replace space (/ /) with hyphen globally (g) i.e. all occurrences of space are replaced with a hyphen
+					
+					localStorage.setItem(allRuns, JSON.stringify(savedRuns));				
+				}
+    else{
+            console.log("Sorry, run could not be saved due to an error.");
+				}			
+}
+
+        /*
+        
+ function retrieveBothTestSets(){ // Still in works!
+				var runName = runNameInput.value; 
+				
+				if (typeof(Storage) !== "undefined"){
+					allRuns = runName.replace(/ /g, "-"); 				//replace space (/ /) with hyphen globally (g) i.e. all occurrences of space are replaced with a hyphen
+				
+					runObj = JSON.parse(localStorage.getItem(allRuns));
+					
+                    // From here onwards I'm struggling.
+                    
+					saveObj2 = {
+						name: saveObjPDO.name,
+						saveSet: []
+					};
+					
+					saveObj2.name = saveObjPDO.name;
+					for (var i = 1; i <= saveFileNum; i++){
+						saveObj2.saveSet[i] = "What do I put here??"(runObjPDO.saveSet[i]);
+					}
+				}
+				else{
+					console.log("Due to an error, run could not be loaded.");
+				}				
+			
+			}
+			
+*/        
+                    
+</script>
+</body>
+
+</html>
+
+
+
+
+
+<!-- 		
+			
+// array.push needs to be used. Lat Lng
+
+//Stringify
+
+// Individual key for each route.
+
+//localstorage.setItem
+
+Everything involving PDO placed below.
+
+
+ //var runObjPDO = {
+	   name: "",
+        saveSet: [],
+        hr: 0,
+        min: 0,
+        sec: 0,
+        ms: 0
+    }			
+
+
+//var allRunsPDO;
+
+var runNamePDO;
+
+this.runObjPDO = {
+        name: prompt("Name of Run + PDO:", ""),
+        hr: hr,
+        min: min,
+        sec: sec,
+        ms: ms,
+        saveSet: []
+    }
+
+allRunsPDO = runObjPDO.name.replace(/ /g, "-"); 
+localStorage.setItem(allRunsPDO, JSON.stringify(runObjPDO));
+
+
+//var runNamePDO = runNamePDONInput.value;
+allRunsPDO = runPDOName.replace(/ /g, "-");
+runObjPDO = JSON.parse(localStorage.getItem(allRunsPDO));
+
+*/-->
+
