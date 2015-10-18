@@ -30,16 +30,16 @@ body {
 
 .card-run-name {
     float: left;
-    font-size: 40px;
+    font-size: 30px;
 }
 
 .card-run-date {
     margin-top: 10px;
-    font-size: 20px;
+    font-size: 15px;
     
 }
 
 .mdl-grid {
-    max-width: 500px;
+    max-width: 600px;
 }
 
